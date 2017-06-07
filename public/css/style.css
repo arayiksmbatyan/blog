@@ -1,0 +1,31 @@
+#sidebar-wrapper {
+  margin-left: -250px;
+  margin-top: -22px;
+  border-right: 1px solid #d3e0e9;
+  left: 250px;
+  width: 250px;
+  background: #fff;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1000;
+  transition: all 0.4s ease 0s; }
+  #sidebar-wrapper .sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    #sidebar-wrapper .sidebar-nav li {
+      line-height: 40px;
+      text-indent: 20px; }
+      #sidebar-wrapper .sidebar-nav li a span b {
+        color: #506738;
+        font-family: Arial;
+        font-size: 16px; }
+      #sidebar-wrapper .sidebar-nav li .dropdown {
+        margin-left: 15px; }
+    #sidebar-wrapper .sidebar-nav h3 {
+      text-align: center;
+      margin-left: -50px; }

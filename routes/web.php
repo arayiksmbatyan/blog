@@ -20,3 +20,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/register/verify', 'Auth\RegisterController@getVerify');
 Route::get('/register/verify/{token}', 'Auth\RegisterController@verify');
+Route::resource('category', 'CategoryController');
+// Route::delete('delete/{id}',array('uses' => 'CategoryController@destroy', 'as' => 'My.route'));
+// Route::put('category/{id}',array('uses' => 'CategoryController@update', 'as' => 'My.route'));
