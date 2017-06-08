@@ -33,4 +33,9 @@ class User extends Authenticatable
    {
        return $this->hasMany('App\Category', 'user_id', 'id');
    }
+
+   public function posts()
+    {
+        return $this->hasManyThrough('App\Post', 'App\Category');
+    }
 }

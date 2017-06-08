@@ -17,7 +17,7 @@
                         @endif
 					</div>
 				</div>
-				<button type="submit" class="btn btn-default">Update Category</button>
+				<button type="submit" class="btn btn-default">Update</button>
 			{{ Form::close() }}
 				
 			</div>

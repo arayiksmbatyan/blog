@@ -20,9 +20,9 @@
                 </a>
                 <div class="collapse" id="toggleDemo1" style="height: 0px;">
                     <ul class="nav nav-list">
-                        <li><a href="#">Add Post</a></li>
-                        <li><a href="#">View Posts</a></li>
-                        <li><a href="#">View All Posts</a></li>
+                        <li><a href="/post/create">Add Post</a></li>
+                        <li><a href="/post/{{Auth::user()->id}}">View Posts</a></li>
+                        <li><a href="/post">View All Posts</a></li>
                     </ul>
                 </div>
             </li>

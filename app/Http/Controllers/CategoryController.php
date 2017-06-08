@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
-use App\Category;
 use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
@@ -106,7 +106,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $this->category->where('id', '=', $id)->delete();
+        $this->category->where('id', $id)->delete();
         $categories = $this->category->get();
         return view("allCategory", ['categories' => $categories]);
 
