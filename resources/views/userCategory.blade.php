@@ -8,8 +8,10 @@
 				@if($category->user_id == Auth::user()->id)
 				<div class="col-sm-12">
 					<a href="#" class="col-sm-8">{{$category->name}}</a>
-					<button class="col-sm-2">Edit</button>
-					<button class="col-sm-2">Delete</button>
+					<a href="/category/{{$category->id}}/edit" class="btn btn-primary col-sm-2">Edit</a>
+					{{ Form::open(['url' => ['category', $category->id], 'method' => 'delete']) }}
+						<button type="submit" class="btn btn-primary col-sm-2">Delete</button>
+					{{ Form::close() }}
 				</div>
 				@endif
 			@endforeach

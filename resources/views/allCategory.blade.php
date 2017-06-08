@@ -9,9 +9,9 @@
 					@if($category->user_id == Auth::user()->id)
 					<div class="col-sm-12">
 						<a href="#" class="col-sm-8">{{$category->name}}</a>
-						<a href="/category/{{$category->id}}/edit" class="col-sm-2">Edit</a>
+						<a href="/category/{{$category->id}}/edit" class="btn btn-primary col-sm-2">Edit</a>
 						{{ Form::open(['url' => ['category', $category->id], 'method' => 'delete']) }}
-							<button type="submit">Delete</button>
+							<button type="submit" class="btn btn-primary col-sm-2">Delete</button>
 						{{ Form::close() }}
 					</div> 
 					@else

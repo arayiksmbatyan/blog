@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use App\Category;
+use App\Http\Requests\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -41,15 +42,19 @@ class CategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Guard $auth)
+    public function store(CategoryRequest $request, Guard $auth)
     {
-        //dd($request->categoryName);
-        $this->category->create([
-            'name' => $request->categoryName,
+        $inputs = [
+            'name' => $request->get('name'),
             'user_id' => $auth->id(),
-        ]);
-        $categories = $this->category->get();
-        return view("userCategory", ['categories' => $categories]);
+        ];
+        if($this->category->create($inputs)){
+            $categories = $this->category->get();
+            return view("userCategory", ['categories' => $categories]); 
+        } else{
+            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        }
+        
     }
 
     /**
@@ -72,8 +77,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $categories = $this->category->find($id);
-        return view("editCategory", ['categories' => $categories]);
+        $category = $this->category->find($id);
+        return view("editCategory", ['category' => $category]);
     }
 
     /**
@@ -83,9 +88,14 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
-        $this->category->where('id', '=', $id)->update(['name' => $request->updateCategoryName]);
+
+        if($this->category->where('id', $id)->update(['name' => $request->get('name')])){
+            return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
+        } else{
+            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        }
     }
 
     /**
@@ -96,7 +106,6 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //dd($this->category);
         $this->category->where('id', '=', $id)->delete();
         $categories = $this->category->get();
         return view("allCategory", ['categories' => $categories]);
