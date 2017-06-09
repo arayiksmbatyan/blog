@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+// use App\Post;
+// use App\User;
+// use App\Category;
+// use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -13,7 +17,10 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->middleware('auth.verified');
+        
+       
     }
 
     /**

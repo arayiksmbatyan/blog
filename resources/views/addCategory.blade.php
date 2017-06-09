@@ -7,9 +7,9 @@
 		    <h2>Add Category</h2>
 			{{ Form::open(['url' => ['category'], 'method' => 'POST']) }}
 				<div class="form-group">
-					<label class="control-label col-sm-3" for="email">Category Name:</label>
+					<label class="control-label col-sm-4" for="name">Category Name:</label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control" placeholder="Enter Name" name="name">
+						<input type="text" id="name" class="form-control" placeholder="Enter Name" name="name">
 						@if ($errors->has('name'))
 			                <span class="help-block">
 			                    <strong>{{ $errors->first('name') }}</strong>
@@ -18,8 +18,8 @@
 					</div>
 				</div>
 				<div class="form-group">        
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default">Add</button>
+					<div class="col-sm-4">
+						<button type="submit" class="btn btn-primary">Add</button>
 					</div>
 				</div>
 			{{ Form::close() }}

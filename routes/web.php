@@ -22,5 +22,7 @@ Route::get('/register/verify', 'Auth\RegisterController@getVerify');
 Route::get('/register/verify/{token}', 'Auth\RegisterController@verify');
 Route::resource('category', 'CategoryController');
 Route::resource('post', 'PostController');
+Route::get('/category/{id}/posts', 'PostController@postsByCategory');
+
 
 

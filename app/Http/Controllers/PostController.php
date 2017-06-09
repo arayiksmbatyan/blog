@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 // use Auth;
+use Validator;
 use App\Post;
 use App\Category;
 use Illuminate\Http\Request;
@@ -9,14 +10,18 @@ use App\Http\Requests\PostRequest;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Contracts\Auth\Guard;
 
+
 class PostController extends Controller
 {
      public function __construct(Post $post, Category $category)
     {
+        parent::__construct();
        $this->middleware('auth');
        $this->post = $post;
        $this->category = $category;
     }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -47,9 +52,22 @@ class PostController extends Controller
      */
     public function store(PostRequest $request, Guard $auth)
     {
+        $imagename = null;
+
+        if($request->hasFile('image')) {
+
+            $user_image = $request->file('image');
+
+            $imagename = time().str_random().$user_image->getClientOriginalName();
+
+            $user_image->move(public_path().'/images/', $imagename);
+
+        }
+
         $inputs = [
             'title' => $request->get('title'),
             'text' => $request->get('text'),
+            'image' => $imagename,
             'category_id' => $request->get('category'),
         ];
 
@@ -97,9 +115,22 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
+        $imagename = null;
+
+        if($request->hasFile('image')) {
+
+            $user_image = $request->file('image');
+
+            $imagename = time().str_random().$user_image->getClientOriginalName();
+
+            $user_image->move(public_path().'/images/', $imagename);
+
+        }
+        
         $input = [
             'title' => $request->get('title'),
             'text' => $request->get('text'),
+            'image' => $imagename,
             'category_id' => $request->get('category'),
         ];
 
@@ -121,5 +152,12 @@ class PostController extends Controller
         $this->post->where('id', $id)->delete();
         $posts = $this->post->get();
         return view("allPosts", ['posts' => $posts]);
+    }
+
+    public function postsByCategory($id)
+    {
+        $category = $this->category->find($id);
+        $posts = $this->post->where('category_id', $id)->get();
+        return view("posts", ['posts' => $posts, 'category' => $category->name]);
     }
 }
