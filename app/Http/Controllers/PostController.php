@@ -115,7 +115,7 @@ class PostController extends Controller
      */
     public function update(PostRequest $request, $id)
     {
-        $imagename = null;
+        $input = '';
 
         if($request->hasFile('image')) {
 
@@ -125,14 +125,19 @@ class PostController extends Controller
 
             $user_image->move(public_path().'/images/', $imagename);
 
-        }
-        
-        $input = [
-            'title' => $request->get('title'),
-            'text' => $request->get('text'),
-            'image' => $imagename,
-            'category_id' => $request->get('category'),
-        ];
+            $input = [
+                'title' => $request->get('title'),
+                'text' => $request->get('text'),
+                'image' => $imagename,
+                'category_id' => $request->get('category'),
+            ];
+        } else {
+            $input = [
+                'title' => $request->get('title'),
+                'text' => $request->get('text'),
+                'category_id' => $request->get('category'),
+            ];
+        }    
 
         if($this->post->where('id', $id)->update($input)){
             return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
