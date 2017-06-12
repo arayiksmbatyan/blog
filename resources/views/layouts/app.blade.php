@@ -62,10 +62,6 @@
                                         <a href="/home/{{ Auth::user()->id }}/edit">
                                             My Account
                                         </a>
-
-{{--                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form> --}}
                                     </li>
                                     <li>
                                         <a href="{{ route('logout') }}"

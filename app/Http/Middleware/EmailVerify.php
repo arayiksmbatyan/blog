@@ -15,7 +15,7 @@ class EmailVerify {
     */
    public function handle($request, Closure $next)
    {
-       if(Auth::check() && Auth::user()->status == 1) {
+       if (Auth::check() && Auth::user()->status == 1) {
            return $next($request);
        }  else {
            return redirect('/register/verify');

@@ -40,8 +40,6 @@ class HomeController extends Controller
 
     public function edit($id)
     {   
-        // $categories = $this->category->where('user_id', $auth->id())->get();
-        // $post = $this->post->find($id);
         return view('myAccount', ['user' => $id]);   
     }
 
@@ -59,8 +57,7 @@ class HomeController extends Controller
         $db_old_password = $this->user->find($id)->password;
         $inp_old_password = $request->get('old-password');
 
-        if (Hash::check($inp_old_password, $db_old_password))
-        {
+        if (Hash::check($inp_old_password, $db_old_password)) {
 
             $inputs = [
                 'password' => bcrypt($request->get('password'))

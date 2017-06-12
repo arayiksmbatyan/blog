@@ -76,19 +76,19 @@ class RegisterController extends Controller
 
     protected function getVerify()
     {
-        if(Auth::user()->status == 0){
+        if (Auth::user()->status == 0) {
             $token = Auth::user()->email_confirm_token;
             $url = env('APP_URL', 'http://blog.dev').'/register/verify/'. $token; 
             $email = Auth::user()->email;
             //dd($url); 
-            Mail::send('auth.confirm_email', ['url' => $url], function ($message) use ($email)
+            Mail::send('auth.confirmEmail', ['url' => $url], function ($message) use ($email)
             {
                 $message->from('arayiksmbatyan@gmail.com', 'Blog');
                 $message->to($email);
                 $message->subject('Please confirm your email address!!!');
             });
             return view('auth.verify');
-        } else{
+        } else {
             return redirect('home');
         }
     }
@@ -96,11 +96,11 @@ class RegisterController extends Controller
     protected function verify($token)
     {
         $user = Auth::user();
-        if($user && $user->email_confirm_token == $token){
+        if ($user && $user->email_confirm_token == $token) {
             $user->status = 1;
             $user->save();
             return redirect('home');
-        } else{
+        } else {
             return redirect('/login');
         }
     }
@@ -122,41 +122,34 @@ class RegisterController extends Controller
 
     public function handleProviderCallback()
     {
-        try 
-        {
-            $socialUser = Socialite::driver('facebook')->user();
+        try  {
+            $social_user = Socialite::driver('facebook')->user();
 
-        } 
-        catch (Exception $e) 
-        {
+        } catch (Exception $e) {
             return redirect('/');
         }
 
-        if($socialUser->getEmail() != null)
-        {
-            $socialProvider = SocialProvider::where('provider_id', $socialUser->getId())->first();
+        if ($social_user->getEmail() != null) {
+            $social_provider = SocialProvider::where('provider_id', $social_user->getId())->first();
 
-            if(!$socialProvider)
-            {
+            if (!$social_provider) {
                 $user = User::firstOrCreate(
-                    ['email' => $socialUser->getEmail(),
-                    'name' => $socialUser->getName(),
+                    ['email' => $social_user->getEmail(),
+                    'name' => $social_user->getName(),
                     'email_confirm_token' => md5(time().str_random(2)),
                     ]
                 );
                 $user->socialProviders()->create(
-                    ['provider_id' => $socialUser->getId(), 'provider' => 'facebook']
+                    ['provider_id' => $social_user->getId(), 'provider' => 'facebook']
                 );
-            }
-            else
-                $user = $socialProvider->user;
+            } else
+                $user = $social_provider->user;
 
 
             auth()->login($user);
 
             return redirect('/home');
-        }
-        else
+        } else
             return redirect('/register')->with('msg', 'Your Facebook account has no email.');
 
     }

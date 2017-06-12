@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-// use Auth;
+
 use Validator;
 use App\Post;
 use App\Category;
@@ -52,30 +52,30 @@ class PostController extends Controller
      */
     public function store(PostRequest $request, Guard $auth)
     {
-        $imagename = null;
+        $image_name = null;
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
 
             $user_image = $request->file('image');
 
-            $imagename = time().str_random().$user_image->getClientOriginalName();
+            $image_name = time().str_random().$user_image->getClientOriginalName();
 
-            $user_image->move(public_path().'/images/', $imagename);
+            $user_image->move(public_path().'/images/', $image_name);
 
         }
 
         $inputs = [
             'title' => $request->get('title'),
             'text' => $request->get('text'),
-            'image' => $imagename,
-            'category_id' => $request->get('category'),
+            'image' => $image_name,
+            'category_id' => $request->get('category')
         ];
 
-        if($this->post->create($inputs)){
+        if ($this->post->create($inputs)) {
             $user_id = $auth->id();
             $posts = $auth->user()->posts;
             return view("userPosts", ['posts' => $posts]); 
-        } else{
+        } else {
             return redirect()->back()->with(['error' => "Something went wrong!!!"]);
         }  
     }
@@ -117,18 +117,18 @@ class PostController extends Controller
     {
         $input = '';
 
-        if($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
 
             $user_image = $request->file('image');
 
-            $imagename = time().str_random().$user_image->getClientOriginalName();
+            $image_name = time().str_random().$user_image->getClientOriginalName();
 
-            $user_image->move(public_path().'/images/', $imagename);
+            $user_image->move(public_path().'/images/', $image_name);
 
             $input = [
                 'title' => $request->get('title'),
                 'text' => $request->get('text'),
-                'image' => $imagename,
+                'image' => $image_name,
                 'category_id' => $request->get('category'),
             ];
         } else {
@@ -139,9 +139,9 @@ class PostController extends Controller
             ];
         }    
 
-        if($this->post->where('id', $id)->update($input)){
+        if ($this->post->where('id', $id)->update($input)) {
             return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
-        } else{
+        } else {
             return redirect()->back()->with(['error' => "Something went wrong!!!"]);
         }
     }

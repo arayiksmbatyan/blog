@@ -49,10 +49,10 @@ class CategoryController extends Controller
             'name' => $request->get('name'),
             'user_id' => $auth->id(),
         ];
-        if($this->category->create($inputs)){
+        if ($this->category->create($inputs)) {
             $categories = $this->category->get();
             return view("userCategory", ['categories' => $categories]); 
-        } else{
+        } else {
             return redirect()->back()->with(['error' => "Something went wrong!!!"]);
         }
         
@@ -92,9 +92,9 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, $id)
     {
 
-        if($this->category->where('id', $id)->update(['name' => $request->get('name')])){
+        if ($this->category->where('id', $id)->update(['name' => $request->get('name')])) {
             return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
-        } else{
+        } else {
             return redirect()->back()->with(['error' => "Something went wrong!!!"]);
         }
     }
@@ -110,7 +110,6 @@ class CategoryController extends Controller
         $this->category->where('id', $id)->delete();
         $categories = $this->category->get();
         return view("allCategory", ['categories' => $categories]);
-
     }
 
 }

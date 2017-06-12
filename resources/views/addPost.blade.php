@@ -49,16 +49,3 @@
 		</div>
 	</div>
 @endsection
-
-
-
-
-{{-- 
-
-@section('content')
-    {!! Form::open(['url' => '/imageupload', 'method' => 'put', 'files' => true]) !!}
-    	{!! Form::file('image') !!}
-    	{!! Form::submit('Add Profile Picture') !!}
-    	{{  csrf_field() }}
-    {!! Form::close() !!}
-@endsection --}}
