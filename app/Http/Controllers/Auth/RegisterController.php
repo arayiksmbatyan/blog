@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use Auth;
 use App\User;
 use Mail;
+use Socialite;
+use App\SocialProvider;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -76,7 +78,7 @@ class RegisterController extends Controller
     {
         if(Auth::user()->status == 0){
             $token = Auth::user()->email_confirm_token;
-            $url = env('APP_URL').'/register/verify/'. $token; 
+            $url = env('APP_URL', 'http://blog.dev').'/register/verify/'. $token; 
             $email = Auth::user()->email;
             //dd($url); 
             Mail::send('auth.confirm_email', ['url' => $url], function ($message) use ($email)
@@ -101,5 +103,61 @@ class RegisterController extends Controller
         } else{
             return redirect('/login');
         }
+    }
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return Response
+     */
+
+    public function handleProviderCallback()
+    {
+        try 
+        {
+            $socialUser = Socialite::driver('facebook')->user();
+
+        } 
+        catch (Exception $e) 
+        {
+            return redirect('/');
+        }
+
+        if($socialUser->getEmail() != null)
+        {
+            $socialProvider = SocialProvider::where('provider_id', $socialUser->getId())->first();
+
+            if(!$socialProvider)
+            {
+                $user = User::firstOrCreate(
+                    ['email' => $socialUser->getEmail(),
+                    'name' => $socialUser->getName(),
+                    'email_confirm_token' => md5(time().str_random(2)),
+                    ]
+                );
+                $user->socialProviders()->create(
+                    ['provider_id' => $socialUser->getId(), 'provider' => 'facebook']
+                );
+            }
+            else
+                $user = $socialProvider->user;
+
+
+            auth()->login($user);
+
+            return redirect('/home');
+        }
+        else
+            return redirect('/register')->with('msg', 'Your Facebook account has no email.');
+
     }
 }

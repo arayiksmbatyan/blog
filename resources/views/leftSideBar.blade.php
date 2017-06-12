@@ -1,3 +1,5 @@
+
+@if (Auth::user()->status == 1)
 <div id="sidebar-wrapper">
     <nav id="spy">
         <ul class="sidebar-nav nav">
@@ -34,3 +36,4 @@
         </ul>
     </nav>
 </div>
+@endif

@@ -30,12 +30,18 @@ class User extends Authenticatable
     
 
     public function categories()
-   {
+    {
        return $this->hasMany('App\Category', 'user_id', 'id');
-   }
+    }
 
-   public function posts()
+    public function posts()
     {
         return $this->hasManyThrough('App\Post', 'App\Category');
     }
+    public function socialProviders()
+    {
+        return $this->hasMany(SocialProvider::class);
+    }
+
+
 }

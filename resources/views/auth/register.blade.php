@@ -2,6 +2,11 @@
 
 @section('content')
 <div class="container">
+    @if (session('msg'))
+        <div class="alert alert-danger">
+            {{ session('msg') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
@@ -61,10 +66,15 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-6 right-align">
                                 <button type="submit" class="btn btn-primary">
                                     Register
                                 </button>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/auth/facebook" type="button" class="btn btn-primary">
+                                    Sign up with Facebook
+                                </a>
                             </div>
                         </div>
                     </form>

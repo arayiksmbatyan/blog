@@ -37,7 +37,6 @@
   margin-left: 250px; }
 
 .container .btn {
-  width: 100px;
   margin: 2px; }
 
 .container .category {
@@ -49,3 +48,6 @@
 .container .btn-cont {
   margin-top: 25px;
   text-align: center; }
+
+.container .right-align {
+  text-align: right; }

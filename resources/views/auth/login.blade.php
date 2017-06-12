@@ -39,23 +39,31 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-6 right-align">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    Forgot Your Password?
+                                </a>
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-8 col-md-offset-4">
+                            <div class="col-md-6 right-align">
                                 <button type="submit" class="btn btn-primary">
                                     Login
                                 </button>
 
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
+                                
+                            </div>
+                            <div class="col-md-6">
+                                <a href="/auth/facebook" type="button" class="btn btn-primary">
+                                    Sign in with Facebook
                                 </a>
                             </div>
                         </div>

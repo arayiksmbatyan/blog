@@ -24,5 +24,8 @@ Route::resource('/home', 'HomeController');
 Route::resource('category', 'CategoryController');
 Route::resource('post', 'PostController');
 
+Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
+Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+
 
 
