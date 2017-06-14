@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-	@include('categoryDeleteConfirm')
+	@include('category.delete')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
 		    <h2>My Categories</h2>

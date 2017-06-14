@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\User;
 use App\Category;
 use App\Post;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\View;
 
 class Controller extends BaseController

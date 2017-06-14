@@ -2,7 +2,7 @@
 
 @section('content')
 
-	@include('postDeleteConfirm')
+	@include('post.delete')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
 		    <h2>My Posts</h2>

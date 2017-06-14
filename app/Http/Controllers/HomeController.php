@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserRequest;
@@ -34,7 +34,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('home.home');
     }
 
 

@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/register/verify', 'Auth\RegisterController@getVerify');
 Route::get('/register/verify/{token}', 'Auth\RegisterController@verify');
-Route::get('/category/{id}/posts', 'PostController@postsByCategory');
+Route::get('/category/{id}/posts', 'CategoryController@postsByCategory');
 Route::resource('/home', 'HomeController');
 Route::resource('category', 'CategoryController');
 Route::resource('post', 'PostController');

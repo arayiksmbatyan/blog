@@ -30,7 +30,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = $this->post->get();
-        return view("allPosts", ['posts' => $posts]);
+        return view("post.all", ['posts' => $posts]);
     }
      
     /**
@@ -41,7 +41,7 @@ class PostController extends Controller
     public function create(Guard $auth)
     {
         $categories = $this->category->where('user_id', $auth->id())->get();
-        return view("addPost", ['categories' => $categories]);
+        return view("post.create", ['categories' => $categories]);
     }
 
     /**
@@ -72,9 +72,7 @@ class PostController extends Controller
         ];
 
         if ($this->post->create($inputs)) {
-            $user_id = $auth->id();
-            $posts = $auth->user()->posts;
-            return view("userPosts", ['posts' => $posts]); 
+           return redirect()->back()->with(['success' => "Category has successfully created!!!"]);
         } else {
             return redirect()->back()->with(['error' => "Something went wrong!!!"]);
         }  
@@ -90,7 +88,7 @@ class PostController extends Controller
     {
         $user_id = $id;
         $posts = $auth->user()->posts;
-        return view("userPosts", ['posts' => $posts]);
+        return view("post.index", ['posts' => $posts]);
     }
 
     /**
@@ -103,7 +101,7 @@ class PostController extends Controller
     {
         $categories = $this->category->where('user_id', $auth->id())->get();
         $post = $this->post->find($id);
-        return view('editPost', ['post' => $post, 'categories' => $categories]);   
+        return view('post.edit', ['post' => $post, 'categories' => $categories]);   
     }
 
     /**
@@ -154,15 +152,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $this->post->where('id', $id)->delete();
-        $posts = $this->post->get();
-        return view("allPosts", ['posts' => $posts]);
-    }
+        if ($this->post->where('id', $id)->delete()) {
+            return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
+        } else {
+            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        }
 
-    public function postsByCategory($id)
-    {
-        $category = $this->category->find($id);
-        $posts = $this->post->where('category_id', $id)->get();
-        return view("posts", ['posts' => $posts, 'category' => $category->name]);
     }
 }

@@ -51,5 +51,14 @@ $app->singleton(
 | from the actual running of the application and sending responses.
 |
 */
+$app->singleton(
+'App\Contracts\CategoryServiceInterface',
+'App\Services\CategoryServices'
+);
+
+$app->singleton(
+'App\Contracts\PostServiceInterface',
+'App\Services\PostServices'
+);
 
 return $app;

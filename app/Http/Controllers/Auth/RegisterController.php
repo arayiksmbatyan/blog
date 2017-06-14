@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use Auth;
-use App\User;
 use Mail;
 use Socialite;
+use App\Http\Requests\UserRequest;
 use App\SocialProvider;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -80,7 +80,7 @@ class RegisterController extends Controller
             $token = Auth::user()->email_confirm_token;
             $url = env('APP_URL', 'http://blog.dev').'/register/verify/'. $token; 
             $email = Auth::user()->email;
-            //dd($url); 
+
             Mail::send('auth.confirmEmail', ['url' => $url], function ($message) use ($email)
             {
                 $message->from('arayiksmbatyan@gmail.com', 'Blog');

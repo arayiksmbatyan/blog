@@ -82,7 +82,7 @@
             </div>
         </nav>
         @if(Auth::user())
-        @include('leftSideBar')
+        @include('home.menu')
         @endif
         @yield('content')
     </div>
