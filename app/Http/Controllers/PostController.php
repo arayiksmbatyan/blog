@@ -15,13 +15,11 @@ use App\Contracts\CategoryServiceInterface;
 
 class PostController extends Controller
 {
-     public function __construct(Post $post, Category $category)
+     public function __construct()
     {
         parent::__construct();
        $this->middleware('auth');
     }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -30,7 +28,7 @@ class PostController extends Controller
     public function index(PostServiceInterface $postService)
     {      
         if ($posts = $postService->allPost()) {
-            return view("post.all", ['posts' => $posts]);
+            return view("post.index", ['posts' => $posts]);
         }
         return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
@@ -64,12 +62,8 @@ class PostController extends Controller
             $user_image->move(public_path().'/images/', $image_name);
         }
 
-        $inputs = [
-            'title' => $request->get('title'),
-            'text' => $request->get('text'),
-            'image' => $image_name,
-            'category_id' => $request->get('category')
-        ];
+        $inputs = $request->only('title', 'text', 'category_id');
+        $inputs['image'] = $image_name;
 
         if ($postService->addPost($inputs)) {
            return redirect()->back()->with(['success' => "Post has successfully created!!!"]);
@@ -85,10 +79,8 @@ class PostController extends Controller
      */
     public function show(Guard $auth, PostServiceInterface $postService)
     {
-        if ($posts = $postService->myPost($auth->user())) {
-            return view("post.index", ['posts' => $posts]);
-        }
-        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        $posts = $auth->user()->posts;
+        return view("post.user", ['posts' => $posts]);
     }
 
     /**
@@ -115,25 +107,17 @@ class PostController extends Controller
      */
     public function update($id, PostRequest $request, PostServiceInterface $postService)
     {
-        $inputs = '';
+        $inputs = null;
 
         if ($request->hasFile('image')) {
             $user_image = $request->file('image');
             $image_name = time().str_random().$user_image->getClientOriginalName();
             $user_image->move(public_path().'/images/', $image_name);
 
-            $inputs = [
-                'title' => $request->get('title'),
-                'text' => $request->get('text'),
-                'image' => $image_name,
-                'category_id' => $request->get('category'),
-            ];
+            $inputs = $request->only('title', 'text', 'category_id');
+            $inputs['image'] = $image_name;
         } else {
-            $inputs = [
-                'title' => $request->get('title'),
-                'text' => $request->get('text'),
-                'category_id' => $request->get('category'),
-            ];
+            $inputs = $request->only('title', 'text', 'category_id');
         }    
 
         if ($postService->updatePost($inputs, $id)) {

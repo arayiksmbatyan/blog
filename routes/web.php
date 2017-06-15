@@ -22,8 +22,16 @@ Route::get('/register/verify/{token}', 'Auth\RegisterController@verify');
 Route::get('/category/{id}/posts', 'CategoryController@postsByCategory');
 Route::resource('/home', 'HomeController');
 Route::resource('/user', 'UserController');
-Route::resource('category', 'CategoryController');
-Route::resource('post', 'PostController');
+Route::resource('/category', 'CategoryController', [
+	'names' => [
+		'update' => 'categoryUpdate'
+	]
+]);
+Route::resource('/post', 'PostController', [
+	'names' => [
+		'update' => 'postUpdate'
+	]
+]);
 
 Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
 Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');

@@ -8,8 +8,6 @@ interface CategoryServiceInterface {
 
     public function addCategory($inputs);
 
-    public function myCategory($id);
-
     public function editCategory($id);
 
     public function updateCategory($inputs, $id);
@@ -19,6 +17,4 @@ interface CategoryServiceInterface {
     public function getCategoryById($id);
 
     public function getCategoryByUser($id);
-
-    public function postsByCategory($id);
 }

@@ -3,14 +3,12 @@
 namespace App\Services;
 
 use App\Post;
-use App\Category;
 use App\Contracts\PostServiceInterface;
 
 class PostServices implements PostServiceInterface
 {
-	public function __construct(Category $category, Post $post)
+	public function __construct(Post $post)
     {
-       $this->category = $category;
        $this->post = $post;
     }
 
@@ -22,11 +20,6 @@ class PostServices implements PostServiceInterface
     public function addPost($inputs)
     {
     	return $this->post->create($inputs);
-    }
-
-    public function myPost($user)
-    {
-    	return $user->posts;
     }
 
     public function editPost($id)

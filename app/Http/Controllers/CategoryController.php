@@ -11,7 +11,7 @@ use App\Contracts\CategoryServiceInterface;
 
 class CategoryController extends Controller
 {
-    public function __construct(Post $post, Category $category)
+    public function __construct()
     {
         parent::__construct();
        $this->middleware('auth');
@@ -25,7 +25,7 @@ class CategoryController extends Controller
     public function index(CategoryServiceInterface $categoryService)
     {
         if ($categories = $categoryService->allCategory()) {
-            return view("category.all", ['categories' => $categories]);
+            return view("category.index", ['categories' => $categories]);
         }
         return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
@@ -48,10 +48,9 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request, Guard $auth, CategoryServiceInterface $categoryService)
     {
-        $inputs = [
-            'name' => $request->get('name'),
-            'user_id' => $auth->id(),
-        ];
+        $inputs = $request->only('name');
+        $inputs['user_id'] = $auth->id();
+
         if ($categoryService->addCategory($inputs)) {
            return redirect()->back()->with(['success' => "Category has successfully created!!!"]);
         }
@@ -64,13 +63,10 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, CategoryServiceInterface $categoryService)
+    public function show($id, Guard $auth, CategoryServiceInterface $categoryService)
     {
-        if ($categories = $categoryService->myCategory($id)) {
-            return view("category.index", ['categories' => $categories]);
-        }
-        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
-        
+        $categories = $auth->user()->categories;
+        return view("category.user", ['categories' => $categories]); 
     }
 
     /**
@@ -96,7 +92,8 @@ class CategoryController extends Controller
      */
     public function update($id, CategoryRequest $request, CategoryServiceInterface $categoryService)
     {
-        if ($categoryService->editCategory($request->get('name'),$id)) {
+        $input = ['name' => $request->get('name')];
+        if ($categoryService->updateCategory($input, $id)) {
             return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
         }
         return redirect()->back()->with(['error' => "Something went wrong!!!"]);
@@ -119,7 +116,7 @@ class CategoryController extends Controller
     public function postsByCategory($id, CategoryServiceInterface $categoryService)
     {
         if ($category = $categoryService->getCategoryById($id)) {
-            $posts = $categoryService->postsByCategory($id);
+            $posts = $category->posts;
             return view("home.posts", ['posts' => $posts, 'category' => $category->name]);
         }
         return redirect()->back()->with(['error' => "Something went wrong!!!"]);     

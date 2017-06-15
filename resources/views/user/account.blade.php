@@ -3,7 +3,7 @@
 @section('content')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
-		@include('layouts/alerts')
+		@include('popups.alerts')
 		    <h2>Update Password</h2>				
 			<div class="col-sm-offset-2 col-sm-10">
 			{{ Form::open(['url' => ['user', $user], 'method' => 'put']) }}

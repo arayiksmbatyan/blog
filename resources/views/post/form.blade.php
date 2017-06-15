@@ -1,16 +1,13 @@
 @if(isset($post))
-	{{ Form::open(['url' => ['post', $post->id], 'method' => 'put', 'files' => true]) }} 
+	{{ Form::model($post, array('method' => 'PUT','route' => array('postUpdate', $post->id), 'files' => true)) }}
 @else 
 	{{ Form::open(['url' => ['post'], 'method' => 'POST', 'files' => true]) }}
 @endif
 	<div class="col-sm-12 form-group">
 		<div class="col-sm-6">
 			{{Form::label('title', 'Post Title:', ['class' => 'control-label col-sm-12'])}}
-			@if(isset($post))
-				{{Form::text('title', $post->title, ['class' => 'col-sm-12 form-control'])}}
-			@else
-				{{Form::text('title', null, ['class' => 'col-sm-12 form-control'])}}
-			@endif	
+			{{Form::text('title', null, ['class' => 'col-sm-12 form-control'])}}
+
 			@if ($errors->has('name'))
 	            <span class="help-block">
 	                <strong>{{ $errors->first('name') }}</strong>
@@ -20,11 +17,8 @@
 
 		<div class="col-sm-6">
 			{{Form::label('text', 'Post Text:', ['class' => 'control-label col-sm-12'])}}
-			@if(isset($post))
-				{{Form::textarea('text', $post->text, ['class' => 'col-sm-12 form-control', 'rows' => 2])}}
-			@else
-				{{Form::textarea('text', null, ['class' => 'col-sm-12 form-control', 'rows' => 2])}}
-			@endif	
+			{{Form::textarea('text', null, ['class' => 'col-sm-12 form-control', 'rows' => 2])}}
+
 			@if ($errors->has('name'))
 	            <span class="help-block">
 	                <strong>{{ $errors->first('name') }}</strong>
@@ -33,7 +27,7 @@
 		</div>
 		<div class="col-sm-6">
 			{{Form::label('category', 'Post Category:', ['class' => 'control-label col-sm-12'])}}
-			<select name="category" class="col-sm-12 form-control" id="category">
+			<select name="category_id" class="col-sm-12 form-control" id="category">
 				@foreach ($categories as $category)	
 					<option value="{{$category->id}}">{{$category->name}}</option>
 				@endforeach	

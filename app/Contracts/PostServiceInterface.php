@@ -8,8 +8,6 @@ interface PostServiceInterface {
 
     public function addPost($inputs);
 
-    public function myPost($user);
-
     public function editPost($id);
 
     public function updatePost($inputs, $id);
