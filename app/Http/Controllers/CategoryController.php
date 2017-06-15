@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use App\Category;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Requests\CategoryRequest;
 use App\Contracts\CategoryServiceInterface;

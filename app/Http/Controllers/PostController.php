@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
-use Validator;
-use App\Category;
-use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Requests\CategoryRequest;
