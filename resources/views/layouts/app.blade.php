@@ -59,7 +59,7 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="/home/{{ Auth::user()->id }}/edit">
+                                        <a href="/user/{{ Auth::user()->id }}/edit">
                                             My Account
                                         </a>
                                     </li>

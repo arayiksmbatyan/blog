@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use Auth;
 use Mail;
+use App\User;
 use Socialite;
-use App\Http\Requests\UserRequest;
 use App\SocialProvider;
+use App\Http\Requests\UserRequest;
 use App\Http\Controllers\Controller;
+use App\Contracts\UserServiceInterface;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -120,7 +122,7 @@ class RegisterController extends Controller
      * @return Response
      */
 
-    public function handleProviderCallback()
+    public function handleProviderCallback(UserServiceInterface $userService)
     {
         try  {
             $social_user = Socialite::driver('facebook')->user();
@@ -128,11 +130,14 @@ class RegisterController extends Controller
         } catch (Exception $e) {
             return redirect('/');
         }
+        
 
         if ($social_user->getEmail() != null) {
             $social_provider = SocialProvider::where('provider_id', $social_user->getId())->first();
 
-            if (!$social_provider) {
+            $user = '';
+
+            if (!$social_provider && !$userService->getUserEmail($social_user->email)) {
                 $user = User::firstOrCreate(
                     ['email' => $social_user->getEmail(),
                     'name' => $social_user->getName(),
@@ -142,15 +147,21 @@ class RegisterController extends Controller
                 $user->socialProviders()->create(
                     ['provider_id' => $social_user->getId(), 'provider' => 'facebook']
                 );
-            } else
-                $user = $social_provider->user;
+            } elseif (!$social_provider && $userService->getUserEmail($social_user->email)) {
 
+                $user = $userService->getUserEmail($social_user->email);
 
+                $user->socialProviders()->create(
+                    ['provider_id' => $social_user->getId(), 'provider' => 'facebook']
+                );
+            }
+
+            $user = $social_provider->user;
             auth()->login($user);
 
             return redirect('/home');
-        } else
-            return redirect('/register')->with('msg', 'Your Facebook account has no email.');
+        } 
+        return redirect('/register')->with('msg', 'Your Facebook account has no email.');
 
     }
 }

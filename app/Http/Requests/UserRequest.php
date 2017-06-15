@@ -34,7 +34,7 @@ class UserRequest extends FormRequest
        return [
            'password.min' => 'Your password must be min 6 characters',
            'old-password.min' => 'Your password must be min 6 characters',
-           'password.regex' => 'Your password must be  include at least one lowercase letter, one upper case letters, and numbers.'
+           'password.regex' => 'Your password must be  include at least one lowercase letter, one upper case letters, and numbers.',
            'old-password.regex' => 'Your password must be  include at least one lowercase letter, one upper case letters, and numbers.'
        ];
    }

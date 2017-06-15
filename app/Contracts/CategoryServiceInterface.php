@@ -18,5 +18,7 @@ interface CategoryServiceInterface {
 
     public function getCategoryById($id);
 
+    public function getCategoryByUser($id);
+
     public function postsByCategory($id);
 }

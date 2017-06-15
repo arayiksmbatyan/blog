@@ -61,4 +61,9 @@ $app->singleton(
 'App\Services\PostServices'
 );
 
+$app->singleton(
+'App\Contracts\UserServiceInterface',
+'App\Services\UserServices'
+);
+
 return $app;

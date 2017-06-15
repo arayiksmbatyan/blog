@@ -50,6 +50,11 @@ class CategoryServices implements CategoryServiceInterface
 		return $this->category->find($id);
 	}
 
+	public function getCategoryByUser($id)
+	{
+		return $this->category->where('user_id', $id)->get();
+	}
+
 	public function postsByCategory($id)
 	{
         return $this->post->where('category_id', $id)->get();

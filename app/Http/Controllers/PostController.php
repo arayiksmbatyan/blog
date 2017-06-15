@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Validator;
 use App\Post;
+use Validator;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostRequest;
-use App\Http\Requests\CategoryRequest;
 use Illuminate\Contracts\Auth\Guard;
+use App\Http\Requests\CategoryRequest;
+use App\Contracts\PostServiceInterface;
+use App\Contracts\CategoryServiceInterface;
 
 
 class PostController extends Controller
@@ -17,8 +19,6 @@ class PostController extends Controller
     {
         parent::__construct();
        $this->middleware('auth');
-       $this->post = $post;
-       $this->category = $category;
     }
 
 
@@ -27,10 +27,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $posts = $this->post->get();
-        return view("post.all", ['posts' => $posts]);
+    public function index(PostServiceInterface $postService)
+    {      
+        if ($posts = $postService->allPost()) {
+            return view("post.all", ['posts' => $posts]);
+        }
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
      
     /**
@@ -38,10 +40,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Guard $auth)
-    {
-        $categories = $this->category->where('user_id', $auth->id())->get();
-        return view("post.create", ['categories' => $categories]);
+    public function create(Guard $auth, CategoryServiceInterface $categoryService)
+    {      
+        if($categories = $categoryService->getCategoryByUser($auth->id())) {
+            return view("post.create", ['categories' => $categories]);
+        }
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 
     /**
@@ -50,18 +54,14 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PostRequest $request, Guard $auth)
+    public function store(PostRequest $request, Guard $auth, PostServiceInterface $postService)
     {
         $image_name = null;
 
         if ($request->hasFile('image')) {
-
             $user_image = $request->file('image');
-
             $image_name = time().str_random().$user_image->getClientOriginalName();
-
             $user_image->move(public_path().'/images/', $image_name);
-
         }
 
         $inputs = [
@@ -71,11 +71,10 @@ class PostController extends Controller
             'category_id' => $request->get('category')
         ];
 
-        if ($this->post->create($inputs)) {
-           return redirect()->back()->with(['success' => "Category has successfully created!!!"]);
-        } else {
-            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
-        }  
+        if ($postService->addPost($inputs)) {
+           return redirect()->back()->with(['success' => "Post has successfully created!!!"]);
+        }
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 
     /**
@@ -84,11 +83,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Guard $auth)
+    public function show(Guard $auth, PostServiceInterface $postService)
     {
-        $user_id = $id;
-        $posts = $auth->user()->posts;
-        return view("post.index", ['posts' => $posts]);
+        if ($posts = $postService->myPost($auth->user())) {
+            return view("post.index", ['posts' => $posts]);
+        }
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 
     /**
@@ -97,11 +97,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Guard $auth)
+    public function edit($id, Guard $auth, CategoryServiceInterface $categoryService, PostServiceInterface $postService)
     {
-        $categories = $this->category->where('user_id', $auth->id())->get();
-        $post = $this->post->find($id);
-        return view('post.edit', ['post' => $post, 'categories' => $categories]);   
+        if ($post = $postService->editPost($id)) {
+            $categories = $categoryService->getCategoryByUser($auth->id());
+            return view('post.edit', ['post' => $post, 'categories' => $categories]);   
+        } 
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 
     /**
@@ -111,37 +113,33 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PostRequest $request, $id)
+    public function update($id, PostRequest $request, PostServiceInterface $postService)
     {
-        $input = '';
+        $inputs = '';
 
         if ($request->hasFile('image')) {
-
             $user_image = $request->file('image');
-
             $image_name = time().str_random().$user_image->getClientOriginalName();
-
             $user_image->move(public_path().'/images/', $image_name);
 
-            $input = [
+            $inputs = [
                 'title' => $request->get('title'),
                 'text' => $request->get('text'),
                 'image' => $image_name,
                 'category_id' => $request->get('category'),
             ];
         } else {
-            $input = [
+            $inputs = [
                 'title' => $request->get('title'),
                 'text' => $request->get('text'),
                 'category_id' => $request->get('category'),
             ];
         }    
 
-        if ($this->post->where('id', $id)->update($input)) {
-            return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
-        } else {
-            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        if ($postService->updatePost($inputs, $id)) {
+            return redirect()->back()->with(['success' => "Post has successfully updated!!!"]);
         }
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 
     /**
@@ -150,13 +148,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, PostServiceInterface $postService)
     {
-        if ($this->post->where('id', $id)->delete()) {
-            return redirect()->back()->with(['success' => "Category has successfully updated!!!"]);
-        } else {
-            return redirect()->back()->with(['error' => "Something went wrong!!!"]);
+        if ($postService->deletePost($id)) {
+            return redirect()->back()->with(['success' => "Post has successfully deleted!!!"]);
         }
-
+        return redirect()->back()->with(['error' => "Something went wrong!!!"]);
     }
 }

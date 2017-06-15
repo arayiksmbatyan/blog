@@ -6,7 +6,7 @@
 		@include('layouts/alerts')
 		    <h2>Update Password</h2>				
 			<div class="col-sm-offset-2 col-sm-10">
-			{{ Form::open(['url' => ['home', $user], 'method' => 'put']) }}
+			{{ Form::open(['url' => ['user', $user], 'method' => 'put']) }}
 				<div class="form-group">
 				    <label for="old-password" class="col-md-4 control-label">Old Password</label>
 

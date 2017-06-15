@@ -4,6 +4,7 @@
 	@include('post.delete')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
+			@include('layouts/alerts')	
 		    <h2>All Posts</h2>
 			@foreach ($posts as $post)
 				<div class="col-sm-12 post">

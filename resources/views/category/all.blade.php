@@ -4,6 +4,7 @@
 	@include('category.delete')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
+			@include('layouts/alerts')
 		    <h2>All Categories</h2>
 		    @if (isset($categories)) 
 				@foreach ($categories as $category)		

@@ -4,6 +4,7 @@
 	@include('category.delete')
 	<div class="container">
 		<div class="row col-md-8 col-md-offset-2"> 
+			@include('layouts/alerts')
 		    <h2>My Categories</h2>
 			@foreach ($categories as $category)
 				@if($category->user_id == Auth::user()->id)
