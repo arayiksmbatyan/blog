@@ -7,8 +7,8 @@ app.controller('AuthController', ['$scope', '$http', '$stateParams', '$rootScope
     if ($stateParams.obj != null) {
     	$scope.message = $stateParams.obj;
     }
-
-    $scope.submit = function(inputs){
+    //login
+    $scope.login = function(inputs){
         $scope.inputs = inputs;
         $http.post('/api/login',$scope.inputs).then(function(response){
 
@@ -34,20 +34,29 @@ app.controller('AuthController', ['$scope', '$http', '$stateParams', '$rootScope
     $rootScope.id = localStorage['id'];
     $rootScope.loggedIn = localStorage['loggedIn'];
 
- //    if($rootScope.user != ''){
-	// 	$state.go('home');
-	// }
-
+    //logout
 	$scope.logout = function () {
-		// console.log(5568555);
 		$http.get('/api/logout').then(function (response) {
-			console.log(response);
-
 				localStorage.clear();
         		$rootScope.loggedIn = false;
-        		$state.go('login');
-			
+        		$state.go('index');
 		});
 	}
 
+
+    //register
+    $scope.register = function (inputs) {
+        $scope.inputs = inputs;
+        $http.post('/api/register', $scope.inputs).then(function (response) {
+            localStorage.setItem('user',response.data.user.name);
+            $rootScope.user = localStorage['user'];
+            localStorage.setItem('loggedIn',true);
+            $rootScope.loggedIn = localStorage['loggedIn'];
+            $state.go('home');
+        },
+        function(response){
+            var err = response.data.email[0];
+            $state.go('register', {obj: err});
+       });
+    }
 }]);

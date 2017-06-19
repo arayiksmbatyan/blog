@@ -1,3 +1,5 @@
-app.controller('HomeController', ['$scope', function($scope) { 
-
+app.controller('PostController', ['$scope', '$rootScope', '$http', function($scope, $rootScope, $http) { 
+	$rootScope.user = localStorage['user'];
+    $rootScope.id = localStorage['id'];
+    $rootScope.loggedIn = localStorage['loggedIn'];
 }]);

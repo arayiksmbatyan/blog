@@ -2,11 +2,9 @@ var app = angular.module("gago",["ui.router"]);
 app.config(function($stateProvider, $urlRouterProvider) {
 	
     $stateProvider
-    // .state('index', {
-    //     url: "/",
-    //     templateUrl: "index.html",
-    //     controller: 'AuthController'
-    // })
+    .state('index', {
+        url: "/"
+    })
     .state('home', {
 	    url: "/home",
         params: {
@@ -30,6 +28,62 @@ app.config(function($stateProvider, $urlRouterProvider) {
         },
         templateUrl : "views/auth/register.html",
         controller: 'AuthController'
+    })
+    .state("addCategory", {
+        url: "/add-category",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/category/add.html",
+        controller: 'CategoryController'
+    })
+    .state("myCategory", {
+        url: "/my-category",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/category/index.html",
+        controller: 'CategoryController'
+    })
+    .state("allCategory", {
+        url: "/all-category",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/category/all.html",
+        controller: 'CategoryController'
+    })
+    .state("editCategory", {
+        url: "/edit-category",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/category/edit.html",
+        controller: 'CategoryController'
+    })
+    .state("addPost", {
+        url: "/add-post",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/post/add.html",
+        controller: 'PostController'
+    })
+    .state("myPost", {
+        url: "/my-post",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/post/index.html",
+        controller: 'PostController'
+    })
+    .state("allPost", {
+        url: "/all-post",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/post/all.html",
+        controller: 'PostController'
     })
     .state("reset", {
     	url: "/reset",

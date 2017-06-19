@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use Auth;
+use App\User;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -38,7 +40,7 @@ class AuthController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request)
+    public function login(Request $request, User $user)
     {
         $this->validate($request, [
             'email' => 'required|email',
@@ -51,6 +53,8 @@ class AuthController extends Controller
         if(!\Auth::attempt($inputs, $request->has('remember'))){
             return response()->json(['message'=>"Incorect Login or Password"],403);
         }
+        $user = $user->where('email', $request->input('email'))->first();
+        Auth::login($user);
         return response()->json(['user'=>\Auth::user()],200);
     }
 
@@ -59,4 +63,28 @@ class AuthController extends Controller
         \Auth::logout();
         return response()->json(['message'=>"403"], 200);
     }
+
+
+    public function register(Request $request) {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'status' => 1,
+            'password' => bcrypt($request->input('password')),
+            'email_confirm_token' => md5(time().str_random(2)),
+        ]);
+
+
+        \Auth::login($user);
+        return response()->json(['user'=>\Auth::user()],200);
+    }
+
+    
+
 }

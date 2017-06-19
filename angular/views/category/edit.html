@@ -1,0 +1,24 @@
+<ng-include src="'views/home/menu.html'"></ng-include>
+<div class="container">
+	<div class="row col-md-8 col-md-offset-2"> 
+	    <h2>Update Categories</h2>
+		<div class="col-sm-12 category">
+		<h4 ng-if="message" class="text-danger">{{message}}</h4>
+			<form class="form-horizontal" role="form">
+				 <div class="form-group" ng-model="categories">
+                    <label for="category" class="col-md-4 control-label">Category Name:</label>
+                    <div class="col-md-6">
+                        <input id="category" type="text" class="form-control" ng-model="categories.name" required autofocus>                      
+                    </div>
+                </div>
+                <div class="form-group">
+	                <div class="col-md-12 text-center">
+	                    <button ng-click="update(categories)" class="btn btn-primary">
+	                        Update Category
+	                    </button>                               
+	                </div>
+	            </div>    
+			</form>
+		</div>
+	</div>
+</div>
