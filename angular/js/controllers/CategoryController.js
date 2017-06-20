@@ -9,19 +9,10 @@ app.controller('CategoryController', ['$scope', '$http', '$stateParams', '$rootS
     if ($stateParams.obj != null) {
         $scope.categories = $stateParams.obj;
     }
-
-    $scope.addCategory = function(inputs){
-        $scope.inputs = inputs;
-        $scope.inputs.user_id = $rootScope.id;
-
-        $http.post('/api/addCategory',$scope.inputs).then(function(response){
-            $scope.message = response.data.message;
-        },
-        function(response){
-
-            $state.go('addCategory');
-        }); 
+    if ($stateParams.obj != null) {
+        $scope.posts = $stateParams.obj;
     }
+
     if($state.current.name == 'myCategory') {
         $http.get('/api/myCategory').then(function(response){
            $scope.categories = response.data.categories;
@@ -37,6 +28,26 @@ app.controller('CategoryController', ['$scope', '$http', '$stateParams', '$rootS
         $http.get('/api/editCategory/' + id).then(function(response){
             $scope.categories = response.data.category;
         });
+    }
+    else if ($state.current.name == 'postByCategory') {
+        var id = $state.params.id;
+        console.log(id);
+        $http.get('/api/postByCategory/' + id).then(function(response){
+            $scope.posts = response.data.posts;
+        });
+    }
+    
+    $scope.addCategory = function(inputs){
+        $scope.inputs = inputs;
+        $scope.inputs.user_id = $rootScope.id;
+
+        $http.post('/api/addCategory',$scope.inputs).then(function(response){
+            $scope.message = response.data.message;
+        },
+        function(response){
+
+            $state.go('addCategory');
+        }); 
     }
 
     $scope.edit = function(inputs){

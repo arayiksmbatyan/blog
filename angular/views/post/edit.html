@@ -1,26 +1,27 @@
 <ng-include src="'views/home/menu.html'"></ng-include>
 <div class="container">
 	<div class="row col-md-8 col-md-offset-2"> 
-	    <h2>Add Post</h2>
-		<div class="col-sm-offset-2 col-sm-10">
+	    <h2>Update Post</h2>
+		<div class="col-sm-offset-2 col-sm-10" ng-model="post">
 		<h4 ng-if="message" class="text-danger">{{message}}</h4>
 			<form class="form-horizontal" role="form">
+                <input type="hidden" name="_method" value="PUT">
 				 <div class="form-group">
                     <label for="title" class="col-md-4 control-label">Post Title:</label>
                     <div class="col-md-6">
-                        <input id="title" type="text" class="form-control" ng-model="inputs.title" required autofocus>                         
+                        <input id="title" type="text" class="form-control" ng-model="post.title" required autofocus>                         
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="text" class="col-md-4 control-label">Post Text:</label>
                     <div class="col-md-6">
-                        <textarea id="text" type="text" class="form-control" ng-model="inputs.text" required autofocus></textarea>                    
+                        <textarea id="text" type="text" class="form-control" ng-model="post.text" required autofocus></textarea>                    
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="category" class="col-md-4 control-label">Post Category:</label>
                     <div class="col-md-6">
-                    	<select ng-model="inputs.category_id" ng-options="option.id as option.name for option in categories track by option.id" class="col-sm-12 form-control" id="category"></select>                       
+                    	<select ng-model="post.category_id" ng-options="option.id as option.name for option in categories track by option.id" class="col-sm-12 form-control" id="category"></select>                       
                     </div>
                 </div>
                  <div class="form-group">
@@ -28,12 +29,13 @@
                     <div class="col-md-6">
                         <input type="file" ngf-select ng-model="file" name="file"    
                             accept="image/*" ngf-max-size="2MB"
-                            ngf-model-invalid="errorFile">
+                            ngf-model-invalid="errorFile">                          
                     </div>
+                </div>
                 <div class="form-group">
 	                <div class="col-md-12 text-center">
-	                    <button ng-click="addPost(inputs, file)" class="btn btn-primary">
-	                        Add Post
+	                    <button ng-click="update(post, file)" class="btn btn-primary">
+	                        Update Post
 	                    </button>                               
 	                </div>
 	            </div>    

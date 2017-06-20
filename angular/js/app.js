@@ -1,4 +1,4 @@
-var app = angular.module("gago",["ui.router"]);
+var app = angular.module("gago",["ui.router", "ngFileUpload"]);
 app.config(function($stateProvider, $urlRouterProvider) {
 	
     $stateProvider
@@ -84,6 +84,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
         },
         templateUrl : "views/post/all.html",
         controller: 'PostController'
+    })
+    .state("editPost", {
+        url: "/edit-post",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/post/edit.html",
+        controller: 'PostController'
+    })
+    .state("postByCategory", {
+        url: "/post/:id/posts",
+        params: {
+            obj: null
+        },
+        templateUrl : "views/home/posts.html",
+        controller: 'CategoryController'
     })
     .state("reset", {
     	url: "/reset",

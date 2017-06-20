@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Auth;
+use App\Post;
 use App\Category;
 use Illuminate\Contracts\Auth\Guard;
 use App\Http\Controllers\Controller;
@@ -59,5 +60,12 @@ class CategoryController extends Controller
     {
         $categoryService->deleteCategory($id);
         return response()->json(['message'=>"Category has successfully deleted!!!"]);
+    }
+
+     public function postsByCategory($id, Post $post, CategoryServiceInterface $categoryService)
+    {
+        $category = $categoryService->getCategoryById($id);
+        $posts = $category->posts;
+        return response()->json(['posts'=>$posts, 'category_id' => $id]);            
     }  
 }

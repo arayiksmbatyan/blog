@@ -1,15 +1,13 @@
 <ng-include src="'views/home/menu.html'"></ng-include>
 <div class="container">
 	<div class="row col-md-8 col-md-offset-2"> 
-	    <h2>My Posts</h2>
+	    <h2>Posts</h2>
 	    <h4 ng-if="message" class="text-danger">{{message}}</h4>
 		<div ng-repeat="post in posts" class="col-sm-12">
 			<img ng-show="post.image == null" src="../images/default.png" class="col-sm-2">
 			<img ng-show="post.image" src="../images/{{post.image}}" class="col-sm-2">
 			<p href="" class="col-sm-3">{{post.title}}</p>
 			<p href="" class="col-sm-3">{{post.text}}</p>
-			<a href="" ng-click="edit(post.id)" class="btn btn-primary col-sm-2">Edit</a>
-			<a href="" ng-click="delete(post.id)" type="button" class="btn btn-danger">Delete</a>
 		</div>
 	</div>
 </div>

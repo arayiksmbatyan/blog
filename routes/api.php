@@ -28,13 +28,16 @@ Route::get('allCategory', 'CategoryController@all');
 Route::get('editCategory/{id}', 'CategoryController@edit');
 Route::put('updateCategory/{id}', 'CategoryController@update');
 Route::delete('deleteCategory/{id}', 'CategoryController@delete');
+Route::get('postByCategory/{id}', 'CategoryController@postsByCategory');
+
 
 //post
 Route::post('addPost', 'PostController@add');
 Route::get('myPost', 'PostController@my');
 Route::get('allPost', 'PostController@all');
-Route::put('editPost', 'PostController@edit');
-Route::delete('deletePost', 'PostController@delete');
+Route::get('editPost/{id}', 'PostController@edit');
+Route::post('updatePost/{id}', 'PostController@update');
+Route::delete('deletePost/{id}', 'PostController@delete');
 
 
 

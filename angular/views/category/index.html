@@ -4,7 +4,7 @@
 	    <h2>My Categories</h2>
 	    <h4 ng-if="message" class="text-danger">{{message}}</h4>
 		<div ng-repeat="category in categories" class="col-sm-12 category">
-			<a href="" class="col-sm-8">{{category.name}}</a>
+			<a href="" class="col-sm-8" ui-sref="postByCategory({id: category.id})">{{category.name}}</a>
 			<a href="" ng-click="edit(category.id)" class="btn btn-primary col-sm-2">Edit</a>
 			<a href="" ng-click="delete(category.id)" type="button" class="btn btn-danger delete-category">Delete</a>
 		</div>
