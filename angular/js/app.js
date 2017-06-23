@@ -1,4 +1,5 @@
 var app = angular.module("gago",["ui.router", "ngFileUpload"]);
+
 app.config(function($stateProvider, $urlRouterProvider) {
 	
     $stateProvider

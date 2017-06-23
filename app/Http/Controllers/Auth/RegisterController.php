@@ -85,7 +85,7 @@ class RegisterController extends Controller
 
             Mail::send('auth.confirmEmail', ['url' => $url], function ($message) use ($email)
             {
-                $message->from('arayiksmbatyan@gmail.com', 'Blog');
+                $message->from('number.prototype@gmail.com', 'Blog');
                 $message->to($email);
                 $message->subject('Please confirm your email address!!!');
             });

@@ -2,7 +2,4 @@ app.controller('HomeController', ['$scope', '$rootScope', '$http', function($sco
 	$rootScope.user = localStorage['user'];
     $rootScope.id = localStorage['id'];
     $rootScope.loggedIn = localStorage['loggedIn'];
-
-
-
 }]);
